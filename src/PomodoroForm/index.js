@@ -1,57 +1,94 @@
 import React from "react";
+import { PomodoroFormUI } from "./PomodoroFormUI";
 
 import {PomodoroContext} from "../PomodoroContext";
 
 function PomodoroForm () {
-    const { minute, 
-        second, 
-        setPlayTimer, 
-        time,
-        setTime, 
-        shortRestTime,
+    const { 
+        setFocusTime,
         setShortRestTime,
-        playTimer} = React.useContext(PomodoroContext);
+        setLongRestTime,
 
-    const inputTimePomodoro = (event) => {
+        inputType,
+        setInputType,
+
+        setSettingButtonActivated} = React.useContext(PomodoroContext);
+
+    const typeInput = (settledInput) => {
+        switch (settledInput) {
+            case "focusInput":
+                setInputType("focusInput");
+                break;
+            case "shortRestInput":
+                setInputType("shortRestInput");
+                break;
+            case "longRestInput":
+                setInputType("longRestInput");
+                break;
+        }
+    }
+    
+    const inputTime = (event) => {
         const timeCreated = event.target.value;
         const timeCreatedNumbered = Number(timeCreated);
+
+        let setTime = null;
+        switch (inputType) {
+            case "focusInput":
+                setTime = setFocusTime;
+                break;
+            case "shortRestInput":
+                setTime = setShortRestTime;
+                break;
+            case "longRestInput":
+                setTime = setLongRestTime;
+                break;
+        }
 
         setTime(timeCreatedNumbered);
     };
     
-    const inputTimeRest = (event) => {
+    // function inputTime (event) {
+    //     const timeCreated = event.target.value;
+    //     const timeCreatedNumbered = Number(timeCreated);
+        
+    //     setTime(timeCreatedNumbered);
+    // };
+    
+    const inputShortRestTime = (event) => {
         const timeCreated = event.target.value;
         const timeCreatedNumbered = Number(timeCreated);
-
-        setTime(timeCreatedNumbered);
+        // console.log(variable)
+        // console.log(event)
+        setShortRestTime(timeCreatedNumbered);
     };
+
+    const inputLongRestTime = (event) => {
+        const timeCreated = event.target.value;
+        const timeCreatedNumbered = Number(timeCreated);
+        console.log(event)
+        setLongRestTime(timeCreatedNumbered);
+    };
+
+    const onClose = () => {
+        setSettingButtonActivated(false);
+    }
     
+    const onSave = () => {
+
+        setSettingButtonActivated(false);
+    }
+
     return (
-        <section>
-            <input 
-            className="setPomodoroTime"
-            type="number"
-            // min="5"
-            // max="50"
-            onChange={inputTimePomodoro}/>
-            
-            <input 
-            className="setRestTime"
-            type="number"
-            // min="5"
-            // max="50"
-            onChange={inputTimeRest}/>
-            
-            <label>Close:</label>
-            <input
-            type="button"
-            className="closeForms"/>
-            
-            <label>Save:</label>
-            <input
-            type="button"
-            className="saveForms"/> 
-        </section>
+        <PomodoroFormUI
+            // inputFocusTime={inputFocusTime}
+            inputShortRestTime={inputShortRestTime}
+            inputLongRestTime={inputLongRestTime}
+            inputTime={inputTime}
+            typeInput={typeInput}
+            onClose={onClose}
+            onSave={onSave}
+            />
     );
 };
 

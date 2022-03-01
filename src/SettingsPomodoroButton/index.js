@@ -3,13 +3,14 @@ import {PomodoroContext} from "../PomodoroContext";
 
 function SettingsPomodoroButton () {
     const {
-        settingButtonActivated,
-        setSettingButtonActivated
+        setSettingButtonActivated,
+
+        setPlayTimer
     } = React.useContext(PomodoroContext);
 
     const activateSettingButton = () => {
         setSettingButtonActivated(true);
-        console.log("going well")
+        setPlayTimer(false);
     };
 
     return (

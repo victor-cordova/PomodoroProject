@@ -1,8 +1,13 @@
 import React from "react";
 
-// import { useToDos } from "./useLocalStorage";
-import { usePomodoroClock } from "./usePomodoroClock";
+// import { usePomodoro } from "./useLocalStorage";
 import { useSettingsPomodoroButton } from "./useSettingsPomodoroButton";
+import { usePomodoroPlayer } from "./usePomodoroPlayer";
+import { usePomodoroType } from "./usePomodoroType";
+import { usePomodoroFocusTime } from "./usePomodoroFocusTime";
+import { usePomodoroRestTime } from "./usePomodoroRestTime";
+import { usePomodoroSeries } from "./usePomodoroSeries";
+import { usePomodoroForm } from "./usePomodoroForm";
 
 const PomodoroContext = React.createContext();
 
@@ -13,38 +18,74 @@ function PomodoroProvider(props) {
     setSettingButtonActivated
   } = useSettingsPomodoroButton();
 
-  const { time,
-    setTime,
-    // shortRestTime,
-    // setShortRestTime,
-    PomodoroPlayer,
-    minute,
-    second,
-    playTimer,
-    setPlayTimer} = usePomodoroClock();
+  const {
+    playTimer, 
+    setPlayTimer,
+  } = usePomodoroPlayer();
 
-  const onPlayer = (onChange) => {
-    const pomodoroPlayer = new PomodoroPlayer( playTimer, setPlayTimer, setTime );
-    pomodoroPlayer[onChange]();
-  }
+  const {
+    typePomodoro, 
+    setTypePomodoro
+  } = usePomodoroType();
 
-  
+  const {
+    focusTime, 
+    setFocusTime,
+
+    defaultFocusTime
+  } = usePomodoroFocusTime();
+
+  const {
+    shortRestTime, 
+    setShortRestTime,
+
+    longRestTime, 
+    setLongRestTime,
+
+    shortRestDefaultTime,
+    longRestDefaultTime
+  } = usePomodoroRestTime();
+
+  const {
+    pomodoroSeries, 
+    setPomodoroSeries
+  } = usePomodoroSeries();  
+
+  const {
+    inputType,
+    setInputType
+  } = usePomodoroForm();
 
   return (
       <PomodoroContext.Provider value={{
+        settingButtonActivated,
+        setSettingButtonActivated,
+    
+        playTimer, 
+        setPlayTimer,
+    
+        typePomodoro, 
+        setTypePomodoro,
+    
+        focusTime, 
+        setFocusTime,
+        
+        defaultFocusTime,
+    
+        shortRestTime, 
+        setShortRestTime,
+    
+        longRestTime, 
+        setLongRestTime,
 
-          time,
-          setTime,
-          minute,
-          second,
-          playTimer,
-          setPlayTimer,
+        shortRestDefaultTime,
+        longRestDefaultTime,
 
-          onPlayer,
-          // PomodoroPlayer,
+        pomodoroSeries, 
+        setPomodoroSeries,
 
-          settingButtonActivated,
-          setSettingButtonActivated
+        inputType,
+        setInputType
       }}> 
         {props.children}
       </PomodoroContext.Provider> 
