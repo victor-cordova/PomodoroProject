@@ -8,6 +8,8 @@ import { usePomodoroFocusTime } from "./usePomodoroFocusTime";
 import { usePomodoroRestTime } from "./usePomodoroRestTime";
 import { usePomodoroSeries } from "./usePomodoroSeries";
 import { usePomodoroForm } from "./usePomodoroForm";
+import { usePomodoroDefaultTime } from "./usePomodoroDefaultTime";
+import { usePomodoroTime } from "./usePomodoroTime";
 
 const PomodoroContext = React.createContext();
 
@@ -56,6 +58,16 @@ function PomodoroProvider(props) {
     setInputType
   } = usePomodoroForm();
 
+  const {
+    pomodoroDefaultTime, 
+    setPomodoroDefaultTime
+  } = usePomodoroDefaultTime("POMODORO_DEFAULT_TIME_V1");
+
+  const {
+    pomodoroTime, 
+    setPomodoroTime,
+  } = usePomodoroTime(pomodoroDefaultTime);
+
   return (
       <PomodoroContext.Provider value={{
         settingButtonActivated,
@@ -85,7 +97,13 @@ function PomodoroProvider(props) {
         setPomodoroSeries,
 
         inputType,
-        setInputType
+        setInputType,
+
+        pomodoroDefaultTime, 
+        setPomodoroDefaultTime,
+
+        pomodoroTime, 
+        setPomodoroTime,
       }}> 
         {props.children}
       </PomodoroContext.Provider> 
