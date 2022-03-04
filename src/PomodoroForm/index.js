@@ -8,6 +8,7 @@ function PomodoroForm () {
         setFocusTime,
         setShortRestTime,
         setLongRestTime,
+        setPomodoroDefaultTime,
 
         inputType,
         setInputType,

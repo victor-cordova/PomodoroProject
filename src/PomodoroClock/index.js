@@ -40,42 +40,22 @@ function numberToTime(number) {
     return {minute: 0, second: 0};
 }
 
-// function defineRestAndFocusTime (restTime, focusTime, typePomodoro, restType) {
-//     if(typePomodoro) {
-        
-//         return  {time: focusTime, mood: "focus"};
-//     }
-//     return  {time: restTime, mood: restType};
-// }
-
 function defineRestAndFocusTime (time, typePomodoro) {
     const focusTime = time[0],
         restTime = time[1];
     if(typePomodoro) {
-        // console.log(focusTime);
-        return  {time: focusTime[1], mood: focusTime[0]};
+        return  {time: focusTime[1], mood: focusTime[0], againstMood: restTime[0]};
     }
-    return  {time: restTime[1], mood: restTime[0]};
+    return  {time: restTime[1], mood: restTime[0], againstMood: focusTime[0]};
 }
 
 
-// function functionDefineTime (focusTime, shortRestTime, longRestTime, pomodoroSeries, typePomodoro) {
-//     if (pomodoroSeries > 0) {
-//         const timeDefinidedAndMood = defineRestAndFocusTime(shortRestTime, focusTime, typePomodoro, "shortRest")
-        
-//         return timeDefinidedAndMood;
-//     }
-//     const timeDefinidedAndMood = defineRestAndFocusTime(longRestTime, focusTime, typePomodoro, "longRest")
-    
-//     return timeDefinidedAndMood;
-// }
-
 function functionDefineTime (pomodoroDefaultTime, pomodoroSeries, typePomodoro) {
-    // console.log(pomodoroDefaultTime);
     let defaultTimeArray = Object.entries(pomodoroDefaultTime);
     
     if (pomodoroSeries > 0) {
         defaultTimeArray.splice(2, 2);
+        
         const timeDefinidedAndMood = defineRestAndFocusTime(defaultTimeArray, typePomodoro)
         
         return timeDefinidedAndMood;
@@ -87,26 +67,22 @@ function functionDefineTime (pomodoroDefaultTime, pomodoroSeries, typePomodoro) 
 }
 
 
-// (typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro);
 
-function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro) {
-    
-    // let reducer;
 
-    // reducer = setPomodoroTime;
+function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro, againstMoodPomodoro) {
 
     return function (timer, timeDefinided) {
+        
         setPomodoroTime(timeDefinided);
-
         if (timeDefinided < 0) {
+
             clearInterval(timer);
             setTypePomodoro(!typePomodoro);    
-            setPlayTimer(false)
-            // console.log(pomodoroDefaultTime)
-            // console.log(moodPomodoro)
+            setPlayTimer(false);
 
-            // setPomodoroTime(pomodoroDefaultTime)
-            if (moodPomodoro === "shortRest" || moodPomodoro === "longRest") {
+            setPomodoroTime(pomodoroDefaultTime[againstMoodPomodoro]);
+
+            if (typePomodoro) {
                 setPomodoroSeries(pomodoroSeries-1); 
             }
         }
@@ -117,20 +93,6 @@ function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomod
 function PomodoroClock() {
 
     const { 
-        // focusTime, 
-        // setFocusTime,
-
-        // defaultFocusTime,
-    
-        // shortRestTime, 
-        // setShortRestTime,
-    
-        // longRestTime, 
-        // setLongRestTime,
-
-        // shortRestDefaultTime,
-        // longRestDefaultTime,
-
         pomodoroSeries,
         setPomodoroSeries,
 
@@ -148,81 +110,58 @@ function PomodoroClock() {
         // playTimer
     } = React.useContext(PomodoroContext); 
 
-    // const moodAndTimePomodoroObject = functionDefineTime(focusTime, shortRestTime, longRestTime, pomodoroSeries, typePomodoro);
-
-    // console.log(pomodoroDefaultTime);
     const moodAndTimePomodoroObject = functionDefineTime(pomodoroDefaultTime, pomodoroSeries, typePomodoro);
 
     let moodPomodoro = moodAndTimePomodoroObject.mood,
+        againstMoodPomodoro = moodAndTimePomodoroObject.againstMood;
+    
+    let timeDefinided = null;
+    if (pomodoroTime < 0) {
         timeDefinided = moodAndTimePomodoroObject.time;
+    }
+    else {
+        timeDefinided = pomodoroTime;
+    }
 
-    // console.log(moodPomodoro);
-    // console.log(pomodoroSeries);
-    // setPomodoroTime(timeDefinided);
     // console.log(pomodoroTime)
+    // console.log(moodAndTimePomodoroObject.time)
+
+    // setPomodoroTime(timeDefinided);
+
     const { minute, second } = numberToTime(pomodoroTime);
-    // let minute;
-    // let second;
-
-    // console.log(second)
-    
-
-    // let setTime = null;
-    // let defaultTime = null;
-
-    // switch (moodPomodoro) {
-    //     case "focus":
-    //         setTime = setFocusTime;
-    //         defaultTime = defaultFocusTime;
-    //         break;
-    //     case "shortRest": 
-    //         setTime = setShortRestTime;
-    //         defaultTime = shortRestDefaultTime;
-    //         break;
-          
-    //     case "longRest": 
-    //         setTime = setLongRestTime;
-    //         defaultTime = longRestDefaultTime;
-    //         break; 
-    //   }
-    
-    
-
-    // const onPlayer = (onChange) => {
-    //     const pomodoroPlayer = new PomodoroPlayer( playTimer, setPlayTimer, setTime, typePomodoro, setTypePomodoro, setPomodoroSeries, pomodoroSeries );
-    //     pomodoroPlayer[onChange]();
-    //     if (onChange === "onStop") setTime(defaultTime)
-    // }
 
     const onPlayer = (onChange) => {
         const pomodoroPlayer = new PomodoroPlayer( playTimer, setPlayTimer, setPomodoroTime, typePomodoro, setTypePomodoro, setPomodoroSeries, pomodoroSeries );
         pomodoroPlayer[onChange]();
         // if (onChange === "onStop") setPomodoroTime(pomodoroDefaultTime[moodPomodoro])
     }
-
-    const reducerClock = functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro);
+    // console.log(moodPomodoro);
+    
 
     React.useEffect(() => {
         let timer = null;
-        setPomodoroTime(timeDefinided)
+        // let timeDefinidedSave = null;
+        // console.log(timeDefinidedSave);
+
+        const reducerClock = functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro, againstMoodPomodoro);
+
+        setPomodoroTime(timeDefinided)      
         if (playTimer) {
-            
             timer = setInterval(() => {
-                
+
                 timeDefinided -= 1;
-                // {minute, second} = numberToTime(timeDefinided);
-                // let timeDefinidedConverted = numberToTime(timeDefinided);
-                // minute = timeDefinidedConverted.minute;
-                // second = timeDefinidedConverted.second;
-                // console.log(second);
-                reducerClock(timer, timeDefinided);     
-                
+                reducerClock(timer, timeDefinided);    
             }, 1000);
         }
 
         else if(!playTimer) {
+            // console.log(timeDefinided);
+        
+            // setPomodoroTime(timeDefinided);
+
             clearInterval(timer);
         }
+        
 
         return () => {clearInterval(timer)};
     },[playTimer, typePomodoro]);

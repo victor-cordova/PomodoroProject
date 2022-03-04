@@ -1,11 +1,8 @@
 import React from "react";
 
-// import { usePomodoro } from "./useLocalStorage";
 import { useSettingsPomodoroButton } from "./useSettingsPomodoroButton";
 import { usePomodoroPlayer } from "./usePomodoroPlayer";
 import { usePomodoroType } from "./usePomodoroType";
-import { usePomodoroFocusTime } from "./usePomodoroFocusTime";
-import { usePomodoroRestTime } from "./usePomodoroRestTime";
 import { usePomodoroSeries } from "./usePomodoroSeries";
 import { usePomodoroForm } from "./usePomodoroForm";
 import { usePomodoroDefaultTime } from "./usePomodoroDefaultTime";
@@ -29,24 +26,6 @@ function PomodoroProvider(props) {
     typePomodoro, 
     setTypePomodoro
   } = usePomodoroType();
-
-  const {
-    focusTime, 
-    setFocusTime,
-
-    defaultFocusTime
-  } = usePomodoroFocusTime();
-
-  const {
-    shortRestTime, 
-    setShortRestTime,
-
-    longRestTime, 
-    setLongRestTime,
-
-    shortRestDefaultTime,
-    longRestDefaultTime
-  } = usePomodoroRestTime();
 
   const {
     pomodoroSeries, 
@@ -78,20 +57,6 @@ function PomodoroProvider(props) {
     
         typePomodoro, 
         setTypePomodoro,
-    
-        focusTime, 
-        setFocusTime,
-        
-        defaultFocusTime,
-    
-        shortRestTime, 
-        setShortRestTime,
-    
-        longRestTime, 
-        setLongRestTime,
-
-        shortRestDefaultTime,
-        longRestDefaultTime,
 
         pomodoroSeries, 
         setPomodoroSeries,
