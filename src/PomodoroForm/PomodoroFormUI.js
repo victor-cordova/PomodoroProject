@@ -10,7 +10,8 @@ function PomodoroFormUI (props) {
             type="number"
             
             onChange={props.inputTime}
-            onClick={() => props.typeInput("focusInput")}
+            // onClick={() => props.typeInput("focusInput")}
+            onClick={() => props.typeInput("focusTime")}
             // dataA
             // min="5"
             // max="50"
@@ -24,7 +25,8 @@ function PomodoroFormUI (props) {
             // min="5"
             // max="50"
             onChange={props.inputTime}
-            onClick={() => props.typeInput("shortRestInput")}
+            // onClick={() => props.typeInput("shortRestInput")}
+            onClick={() => props.typeInput("shortRestTime")}
             />
             
             <label>longRest:</label>
@@ -34,7 +36,8 @@ function PomodoroFormUI (props) {
             min="5"
             max="50"
             onChange={props.inputTime}
-            onClick={() => props.typeInput("longRestInput")}
+            // onClick={() => props.typeInput("longRestInput")}
+            onClick={() => props.typeInput("longRestTime")}
             />
 
             <label>Close:</label>

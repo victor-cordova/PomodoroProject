@@ -1,6 +1,6 @@
 import React from "react";
 
-function usePomodoroDefaultTime (pomodoroDefaultName) {
+function usePomodoroDefaultTime (pomodoroDefaultName, settingButtonActivated) {
     
     const objectDefaultTime = {
         focusTime: 5,
@@ -12,6 +12,8 @@ function usePomodoroDefaultTime (pomodoroDefaultName) {
     
     const [pomodoroDefaultTime, setPomodoroDefaultTime] = React.useState(objectDefaultTime);
 
+    // console.log(pomodoroDefaultTime);
+    
     React.useEffect( () => {  
         try {
             const localStoragePomodoroDefaultTime = localStorage.getItem(pomodoroDefaultName);
@@ -23,7 +25,9 @@ function usePomodoroDefaultTime (pomodoroDefaultName) {
             }
             else {
                 localStoragePomodoroDefaultTimeParsed = JSON.parse(localStoragePomodoroDefaultTime);
+                // console.log(localStoragePomodoroDefaultTimeParsed);
                 setPomodoroDefaultTime(localStoragePomodoroDefaultTimeParsed);
+                // console.log(pomodoroDefaultTime);
             }
             // setLoading(false);
             // setToDos(localStoragePomodoroDefaultTimeParsed);
@@ -33,7 +37,7 @@ function usePomodoroDefaultTime (pomodoroDefaultName) {
         }
 
         
-      }, []);
+      }, [settingButtonActivated]);
 
     return {
         pomodoroDefaultTime, 

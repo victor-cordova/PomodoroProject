@@ -5,86 +5,45 @@ import {PomodoroContext} from "../PomodoroContext";
 
 function PomodoroForm () {
     const { 
-        setFocusTime,
-        setShortRestTime,
-        setLongRestTime,
+        pomodoroDefaultTime,
         setPomodoroDefaultTime,
 
-        inputType,
-        setInputType,
+        setPomodoroTime,
+
+        moodPomodoro, 
+        setMoodPomodoro,
 
         setSettingButtonActivated} = React.useContext(PomodoroContext);
 
-    const typeInput = (settledInput) => {
-        switch (settledInput) {
-            case "focusInput":
-                setInputType("focusInput");
-                break;
-            case "shortRestInput":
-                setInputType("shortRestInput");
-                break;
-            case "longRestInput":
-                setInputType("longRestInput");
-                break;
-        }
+    let pomodoroDefaultTimeNew = pomodoroDefaultTime;
+    let typePomodoroInput = null;
+
+    const typeInput = (type) => {
+        typePomodoroInput = type;
+        
     }
-    
+
     const inputTime = (event) => {
         const timeCreated = event.target.value;
         const timeCreatedNumbered = Number(timeCreated);
 
-        let setTime = null;
-        switch (inputType) {
-            case "focusInput":
-                setTime = setFocusTime;
-                break;
-            case "shortRestInput":
-                setTime = setShortRestTime;
-                break;
-            case "longRestInput":
-                setTime = setLongRestTime;
-                break;
-        }
-
-        setTime(timeCreatedNumbered);
+        pomodoroDefaultTimeNew[typePomodoroInput] = timeCreatedNumbered;
     };
     
-    // function inputTime (event) {
-    //     const timeCreated = event.target.value;
-    //     const timeCreatedNumbered = Number(timeCreated);
-        
-    //     setTime(timeCreatedNumbered);
-    // };
-    
-    const inputShortRestTime = (event) => {
-        const timeCreated = event.target.value;
-        const timeCreatedNumbered = Number(timeCreated);
-        // console.log(variable)
-        // console.log(event)
-        setShortRestTime(timeCreatedNumbered);
-    };
-
-    const inputLongRestTime = (event) => {
-        const timeCreated = event.target.value;
-        const timeCreatedNumbered = Number(timeCreated);
-        console.log(event)
-        setLongRestTime(timeCreatedNumbered);
-    };
-
     const onClose = () => {
         setSettingButtonActivated(false);
     }
     
     const onSave = () => {
-
+        const pomodoroDefaultTimeNewStringified = JSON.stringify(pomodoroDefaultTimeNew);
+        setPomodoroTime(pomodoroDefaultTimeNew[moodPomodoro]);
+        // setPomodoroDefaultTime(pomodoroDefaultTimeNew);
+        localStorage.setItem("POMODORO_DEFAULT_TIME_V1", pomodoroDefaultTimeNewStringified);
         setSettingButtonActivated(false);
     }
 
     return (
         <PomodoroFormUI
-            // inputFocusTime={inputFocusTime}
-            inputShortRestTime={inputShortRestTime}
-            inputLongRestTime={inputLongRestTime}
             inputTime={inputTime}
             typeInput={typeInput}
             onClose={onClose}

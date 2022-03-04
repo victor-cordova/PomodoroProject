@@ -69,7 +69,7 @@ function functionDefineTime (pomodoroDefaultTime, pomodoroSeries, typePomodoro) 
 
 
 
-function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro, againstMoodPomodoro) {
+function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoroActual, againstMoodPomodoroActual) {
 
     return function (timer, timeDefinided) {
         
@@ -80,7 +80,7 @@ function functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomod
             setTypePomodoro(!typePomodoro);    
             setPlayTimer(false);
 
-            setPomodoroTime(pomodoroDefaultTime[againstMoodPomodoro]);
+            setPomodoroTime(pomodoroDefaultTime[againstMoodPomodoroActual]);
 
             if (typePomodoro) {
                 setPomodoroSeries(pomodoroSeries-1); 
@@ -102,6 +102,9 @@ function PomodoroClock() {
         typePomodoro, 
         setTypePomodoro,
 
+        moodPomodoro, 
+        setMoodPomodoro,
+
         pomodoroDefaultTime, 
         setPomodoroDefaultTime,
 
@@ -112,9 +115,11 @@ function PomodoroClock() {
 
     const moodAndTimePomodoroObject = functionDefineTime(pomodoroDefaultTime, pomodoroSeries, typePomodoro);
 
-    let moodPomodoro = moodAndTimePomodoroObject.mood,
-        againstMoodPomodoro = moodAndTimePomodoroObject.againstMood;
+    let moodPomodoroActual = moodAndTimePomodoroObject.mood,
+        againstMoodPomodoroActual = moodAndTimePomodoroObject.againstMood;
     
+    
+
     let timeDefinided = null;
     if (pomodoroTime < 0) {
         timeDefinided = moodAndTimePomodoroObject.time;
@@ -123,27 +128,20 @@ function PomodoroClock() {
         timeDefinided = pomodoroTime;
     }
 
-    // console.log(pomodoroTime)
-    // console.log(moodAndTimePomodoroObject.time)
-
-    // setPomodoroTime(timeDefinided);
-
     const { minute, second } = numberToTime(pomodoroTime);
 
     const onPlayer = (onChange) => {
         const pomodoroPlayer = new PomodoroPlayer( playTimer, setPlayTimer, setPomodoroTime, typePomodoro, setTypePomodoro, setPomodoroSeries, pomodoroSeries );
         pomodoroPlayer[onChange]();
-        // if (onChange === "onStop") setPomodoroTime(pomodoroDefaultTime[moodPomodoro])
     }
-    // console.log(moodPomodoro);
-    
 
     React.useEffect(() => {
         let timer = null;
-        // let timeDefinidedSave = null;
-        // console.log(timeDefinidedSave);
 
-        const reducerClock = functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoro, againstMoodPomodoro);
+        setMoodPomodoro(moodPomodoroActual);
+        
+
+        const reducerClock = functionReducerClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, pomodoroDefaultTime, moodPomodoroActual, againstMoodPomodoroActual);
 
         setPomodoroTime(timeDefinided)      
         if (playTimer) {
@@ -155,16 +153,13 @@ function PomodoroClock() {
         }
 
         else if(!playTimer) {
-            // console.log(timeDefinided);
-        
-            // setPomodoroTime(timeDefinided);
 
             clearInterval(timer);
         }
         
 
         return () => {clearInterval(timer)};
-    },[playTimer, typePomodoro]);
+    },[playTimer, typePomodoro, pomodoroDefaultTime]);
 
     return (
         <PomodoroClockUI

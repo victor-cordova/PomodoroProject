@@ -24,7 +24,10 @@ function PomodoroProvider(props) {
 
   const {
     typePomodoro, 
-    setTypePomodoro
+    setTypePomodoro,
+
+    moodPomodoro, 
+    setMoodPomodoro,
   } = usePomodoroType();
 
   const {
@@ -40,12 +43,12 @@ function PomodoroProvider(props) {
   const {
     pomodoroDefaultTime, 
     setPomodoroDefaultTime
-  } = usePomodoroDefaultTime("POMODORO_DEFAULT_TIME_V1");
+  } = usePomodoroDefaultTime("POMODORO_DEFAULT_TIME_V1", settingButtonActivated);
 
   const {
     pomodoroTime, 
     setPomodoroTime,
-  } = usePomodoroTime(pomodoroDefaultTime);
+  } = usePomodoroTime(pomodoroDefaultTime, "POMODORO_DEFAULT_TIME_V1");
 
   return (
       <PomodoroContext.Provider value={{
@@ -57,6 +60,9 @@ function PomodoroProvider(props) {
     
         typePomodoro, 
         setTypePomodoro,
+
+        moodPomodoro, 
+        setMoodPomodoro,
 
         pomodoroSeries, 
         setPomodoroSeries,
