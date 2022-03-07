@@ -5,17 +5,24 @@ import {PomodoroContext} from "../PomodoroContext";
 
 function PomodoroForm () {
     const { 
-        pomodoroDefaultTime,
-        setPomodoroDefaultTime,
+        LOCAL_STORAGE_POMODORO,
+
+        PomodoroDefaultTime,
 
         setPomodoroTime,
 
         moodPomodoro, 
-        setMoodPomodoro,
 
-        setSettingButtonActivated} = React.useContext(PomodoroContext);
+        pomodoroSeries,
+        setPomodoroSeries,
 
-    let pomodoroDefaultTimeNew = pomodoroDefaultTime;
+        setSettingButtonActivated
+    } = React.useContext(PomodoroContext);
+
+    
+    let PomodoroDataNew = {...PomodoroDefaultTime, "series": pomodoroSeries};
+    
+    let PomodoroData = {...PomodoroDefaultTime, "series": pomodoroSeries};
     let typePomodoroInput = null;
 
     const typeInput = (type) => {
@@ -23,32 +30,56 @@ function PomodoroForm () {
         
     }
 
-    const inputTime = (event) => {
-        const timeCreated = event.target.value;
-        const timeCreatedNumbered = Number(timeCreated);
+    const returnRangeAndTransformByType = (type) => {
+        if (type === "series") {
+            return {"range": 10, "transform": 1}; //Transform is used to go from seconds to minutes
+        }
+        return {"range": 60, "transform": 60};
+    }
 
-        pomodoroDefaultTimeNew[typePomodoroInput] = timeCreatedNumbered;
+    const inputData = (event) => {
+        const dataCreated = event.target.value;
+        const dataCreatedNumbered = Number(dataCreated);
+        const {range, transform} = returnRangeAndTransformByType(typePomodoroInput);
+
+        if (0 < dataCreatedNumbered && dataCreatedNumbered <= range) {
+            PomodoroDataNew[typePomodoroInput] = dataCreatedNumbered * transform;
+        }
+        else {
+            PomodoroDataNew[typePomodoroInput] = PomodoroData[typePomodoroInput];
+            console.error("The input isn't in the range allowed.")
+        }
     };
-    
+
     const onClose = () => {
+
         setSettingButtonActivated(false);
     }
     
     const onSave = () => {
-        const pomodoroDefaultTimeNewStringified = JSON.stringify(pomodoroDefaultTimeNew);
-        setPomodoroTime(pomodoroDefaultTimeNew[moodPomodoro]);
-        // setPomodoroDefaultTime(pomodoroDefaultTimeNew);
-        localStorage.setItem("POMODORO_DEFAULT_TIME_V1", pomodoroDefaultTimeNewStringified);
+
+        const newSeriesValue = PomodoroDataNew.series;
+        delete PomodoroDataNew.series;
+        
+        const pomodoroTimeNewStringified = JSON.stringify(PomodoroDataNew);
+        const pomodoroSeriesNewStringified = JSON.stringify(newSeriesValue);
+
+        localStorage.setItem(LOCAL_STORAGE_POMODORO.series, pomodoroSeriesNewStringified);
+        localStorage.setItem(LOCAL_STORAGE_POMODORO.time, pomodoroTimeNewStringified);
+
+        setPomodoroTime(PomodoroDataNew[moodPomodoro]);
+        setPomodoroSeries(newSeriesValue);
+        
         setSettingButtonActivated(false);
     }
 
     return (
         <PomodoroFormUI
-            inputTime={inputTime}
+            inputData={inputData}
             typeInput={typeInput}
             onClose={onClose}
             onSave={onSave}
-            />
+        />
     );
 };
 

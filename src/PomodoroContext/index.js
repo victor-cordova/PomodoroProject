@@ -4,7 +4,6 @@ import { useSettingsPomodoroButton } from "./useSettingsPomodoroButton";
 import { usePomodoroPlayer } from "./usePomodoroPlayer";
 import { usePomodoroType } from "./usePomodoroType";
 import { usePomodoroSeries } from "./usePomodoroSeries";
-import { usePomodoroForm } from "./usePomodoroForm";
 import { usePomodoroDefaultTime } from "./usePomodoroDefaultTime";
 import { usePomodoroTime } from "./usePomodoroTime";
 
@@ -12,6 +11,11 @@ const PomodoroContext = React.createContext();
 
 function PomodoroProvider(props) {
 
+  const LOCAL_STORAGE_POMODORO = {
+    time: "LOCAL_STORAGE_POMODORO_TIME_V2",
+    series: "LOCAL_STORAGE_POMODORO_SERIES_V2",
+  };
+  
   const {
     settingButtonActivated,
     setSettingButtonActivated
@@ -33,25 +37,22 @@ function PomodoroProvider(props) {
   const {
     pomodoroSeries, 
     setPomodoroSeries
-  } = usePomodoroSeries();  
+  } = usePomodoroSeries(LOCAL_STORAGE_POMODORO.series, settingButtonActivated);  
 
   const {
-    inputType,
-    setInputType
-  } = usePomodoroForm();
-
-  const {
-    pomodoroDefaultTime, 
+    PomodoroDefaultTime, 
     setPomodoroDefaultTime
-  } = usePomodoroDefaultTime("POMODORO_DEFAULT_TIME_V1", settingButtonActivated);
+  } = usePomodoroDefaultTime(LOCAL_STORAGE_POMODORO.time, settingButtonActivated);
 
   const {
     pomodoroTime, 
     setPomodoroTime,
-  } = usePomodoroTime(pomodoroDefaultTime, "POMODORO_DEFAULT_TIME_V1");
+  } = usePomodoroTime(LOCAL_STORAGE_POMODORO.time, PomodoroDefaultTime);
 
   return (
       <PomodoroContext.Provider value={{
+        LOCAL_STORAGE_POMODORO,
+
         settingButtonActivated,
         setSettingButtonActivated,
     
@@ -67,10 +68,7 @@ function PomodoroProvider(props) {
         pomodoroSeries, 
         setPomodoroSeries,
 
-        inputType,
-        setInputType,
-
-        pomodoroDefaultTime, 
+        PomodoroDefaultTime, 
         setPomodoroDefaultTime,
 
         pomodoroTime, 

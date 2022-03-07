@@ -1,36 +1,29 @@
 import React from "react";
 
-function usePomodoroDefaultTime (pomodoroDefaultName, settingButtonActivated) {
+function usePomodoroDefaultTime (POMODORO_TIME, settingButtonActivated) {
     
-    const objectDefaultTime = {
-        focusTime: 5,
-        shortRestTime: 2,
-        longRestTime: 3
+    const DEFAULT_TIME = { 
+        focusTime: 30*60,  //it's *60 to go from seconds to minutes.
+        shortRestTime: 5*60,
+        longRestTime: 15*60
     }
-
-    const objectDefaultTimeStringified = JSON.stringify(objectDefaultTime);
     
-    const [pomodoroDefaultTime, setPomodoroDefaultTime] = React.useState(objectDefaultTime);
-
-    // console.log(pomodoroDefaultTime);
+    const DEFAULT_TIME_STRINGIFIED = JSON.stringify(DEFAULT_TIME);
+    
+    const [PomodoroDefaultTime, setPomodoroDefaultTime] = React.useState(DEFAULT_TIME);
     
     React.useEffect( () => {  
         try {
-            const localStoragePomodoroDefaultTime = localStorage.getItem(pomodoroDefaultName);
-            let localStoragePomodoroDefaultTimeParsed;
+            const localStoragePomodoroTime = localStorage.getItem(POMODORO_TIME);
+            let localStoragePomodoroTimeParsed;
 
-            if (!localStoragePomodoroDefaultTime) {
-                localStorage.setItem(pomodoroDefaultName, objectDefaultTimeStringified);
-                // localStoragePomodoroDefaultTimeParsed = [];
+            if (!localStoragePomodoroTime) {
+                localStorage.setItem(POMODORO_TIME, DEFAULT_TIME_STRINGIFIED);
             }
             else {
-                localStoragePomodoroDefaultTimeParsed = JSON.parse(localStoragePomodoroDefaultTime);
-                // console.log(localStoragePomodoroDefaultTimeParsed);
-                setPomodoroDefaultTime(localStoragePomodoroDefaultTimeParsed);
-                // console.log(pomodoroDefaultTime);
+                localStoragePomodoroTimeParsed = JSON.parse(localStoragePomodoroTime);
+                setPomodoroDefaultTime(localStoragePomodoroTimeParsed);
             }
-            // setLoading(false);
-            // setToDos(localStoragePomodoroDefaultTimeParsed);
 
         } catch (error) {
             console.error(error);
@@ -40,7 +33,7 @@ function usePomodoroDefaultTime (pomodoroDefaultName, settingButtonActivated) {
       }, [settingButtonActivated]);
 
     return {
-        pomodoroDefaultTime, 
+        PomodoroDefaultTime, 
         setPomodoroDefaultTime
     }
 }

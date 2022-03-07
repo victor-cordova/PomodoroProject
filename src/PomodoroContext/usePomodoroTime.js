@@ -1,19 +1,19 @@
 import React from "react";
 
-function usePomodoroTime (pomodoroDefaultTime, pomodoroDefaultName) {
+function usePomodoroTime (POMODORO_TIME, PomodoroDefaultTime) {
 
     
-    const [ pomodoroTime, setPomodoroTime ] = React.useState(pomodoroDefaultTime["focusTime"]);
+    const [ pomodoroTime, setPomodoroTime ] = React.useState(PomodoroDefaultTime["focusTime"]);
 
     React.useEffect( () => {  
         try {
-            const localStoragePomodoroDefaultTime = localStorage.getItem(pomodoroDefaultName);
-            let localStoragePomodoroDefaultTimeParsed;
+            const localStoragePomodoroTime = localStorage.getItem(POMODORO_TIME);
+            let localStoragePomodoroTimeParsed;
 
-            if (localStoragePomodoroDefaultTime) {
-                localStoragePomodoroDefaultTimeParsed = JSON.parse(localStoragePomodoroDefaultTime);
+            if (localStoragePomodoroTime) {
+                localStoragePomodoroTimeParsed = JSON.parse(localStoragePomodoroTime);
 
-                setPomodoroTime(localStoragePomodoroDefaultTimeParsed["focusTime"]);
+                setPomodoroTime(localStoragePomodoroTimeParsed["focusTime"]);
 
             }
 
