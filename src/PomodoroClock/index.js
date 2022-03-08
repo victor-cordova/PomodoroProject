@@ -136,7 +136,6 @@ function PomodoroClock() {
         let timer = null;
 
         setMoodPomodoro(currentMoodPomodoro); 
-        
 
         const reducerClock = reduceClock(typePomodoro, setTypePomodoro, setPlayTimer, pomodoroSeries, setPomodoroSeries, setPomodoroTime, PomodoroDefaultTime, currentAgainstMoodPomodoro); 
 
@@ -148,11 +147,8 @@ function PomodoroClock() {
                 reducerClock(timer, currentTimePomodoro);    
             }, 1000);
         } else if(!playTimer) {
-
             clearInterval(timer);
         }
-        
-
         return () => {clearInterval(timer)};
     },[playTimer, typePomodoro, PomodoroDefaultTime]);
 
