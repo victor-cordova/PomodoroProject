@@ -1,8 +1,13 @@
 import React from "react";
+
+import "./SettingsPomodoroButton.css"
+import "./../styles/button.css";
+
 import {PomodoroContext} from "../PomodoroContext";
 
 function SettingsPomodoroButton () {
     const {
+        settingButtonActivated,
         setSettingButtonActivated,
 
         setPlayTimer
@@ -14,9 +19,16 @@ function SettingsPomodoroButton () {
     };
 
     return (
-        <input
-        type={"button"}
-        onClick={activateSettingButton}/>
+
+        <div>
+            {!settingButtonActivated && 
+            <input
+            className="button button__settings"
+            type={"button"}
+            onClick={activateSettingButton}/>
+            }
+            
+        </div>
     );
 }
 

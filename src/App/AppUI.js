@@ -1,5 +1,7 @@
 import React from "react";
+import './App.css';
 
+import { PomodoroTitle } from "../PomodoroTitle";
 import { PomodoroClock } from "../PomodoroClock";
 import { PomodoroContext } from "../PomodoroContext";
 import { SettingsPomodoroButton } from "../SettingsPomodoroButton";
@@ -9,9 +11,11 @@ import {Modals} from "../Modals";
 
 function AppUI () {
     const {settingButtonActivated} = React.useContext(PomodoroContext);
-    // const audio = useMemo(() => new Au(url), []);
+    
     return (
         <React.Fragment>
+            <PomodoroTitle/>
+
             <PomodoroClock/>
 
             <SettingsPomodoroButton/>   

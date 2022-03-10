@@ -1,0 +1,34 @@
+.button {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-position: center ;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: rgba(0,0,0,0);
+}
+
+.button:hover {
+    /* border: solid white 2px; */
+    transition: 250ms;
+    transform-origin: center;
+    transform: scale(1.2);
+}
+
+.button__settings {
+    background-image: url("../content/icon-setting-v2.png");
+    transform: rotate(90deg);
+}
+
+.button__cancel {
+    background-image: url("../content/icon-cancel-v1.png");
+    transform: rotate(90deg);
+}
+
+.button__save {
+    border-radius: 0%;
+    background-image: url("../content/icon-save-v1.png");
+}
+

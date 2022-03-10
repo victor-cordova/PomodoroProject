@@ -19,10 +19,8 @@ function PomodoroAlarm() {
     }, [pomodoroTime]);
 
     return (
-        <audio>
-        
-        </audio>
-    )
+        <audio/>
+    );
 }
 
 export {PomodoroAlarm};
