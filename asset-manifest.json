@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/PomodoroProject/static/css/main.eb499434.css",
+    "main.js": "/PomodoroProject/static/js/main.05275366.js",
+    "static/media/alarm_tone_1_cut_v2.mp3": "/PomodoroProject/static/media/alarm_tone_1_cut_v2.9e099396188295fe5a20.mp3",
+    "index.html": "/PomodoroProject/index.html",
+    "main.eb499434.css.map": "/PomodoroProject/static/css/main.eb499434.css.map",
+    "main.05275366.js.map": "/PomodoroProject/static/js/main.05275366.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eb499434.css",
+    "static/js/main.05275366.js"
+  ]
+}
